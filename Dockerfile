@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends git curl \
     && (command -v uv >/dev/null 2>&1 || pip install --no-cache-dir uv)
 
 COPY . .
-
-RUN uv pip install --system -r requirements.txt
-
+ 
+# Use python -m pip for reliable installs inside Docker (avoids relying on a separate 'uv' shim)
+RUN python -m pip install --no-cache-dir -r requirements.txt
+ 
 CMD ["bash"]
